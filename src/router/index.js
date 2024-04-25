@@ -1,23 +1,70 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path:'/business/login',
+    name:'商家登录',
+    component:()=>import('../views/business/BusinessLoginView.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path:'/business/manage',
+    name:'商家主控制台',
+    redirect:'/business/manage/datastatistics',//重定向
+    component:()=>import('../views/business/BusinessMainManageView.vue'),
+     children:[
+       {
+        path:'/business/manage/datastatistics',
+        name:'数据统计组件',
+        component:()=>import('../components/business/BusinessDataStatistics.vue')
+      },
+      {
+        path:'/business/manage/dishmanage',
+        name:'菜品管理组件',
+        component:()=>import('../components/business/BusinessDishManage.vue')
+      },
+      {
+        path:'/business/manage/ordermanage',
+        name:'订单管理组件',
+        component:()=>import('../components/business/BusinessOrderManage.vue')
+      },
+      {
+        path:'/business/manage/employeemanage',
+        name:'员工管理组件',
+        component:()=>import('../components/business/BusinessEmployeeManage.vue')
+      }
+     ]
+    },
+    {
+      path:'/customer/login',
+      name:'顾客登录',
+      component:()=>import('../views/customer/CustomerLoginView.vue')
+    },
+    {
+      path:'/customer/register',
+      name:'顾客注册账号',
+      component:()=>import('../views/customer/registerfunction/RegisterAccountView.vue')
+    },
+    {
+      path:'/customer/manage',
+      name:'顾客主控制台',
+      redirect:'../customer/manage/order',//重定向
+      component:()=>import('../views/customer/CustomerMainManageView.vue'),
+       children:[
+         {
+          path:'/customer/manage/order',
+          name:'顾客点餐界面',
+          component:()=>import('../components/customer/CustomerOrder.vue')
+        },
+        {
+          path:'/customer/manage/history',
+          name:'顾客历史订单查询',
+          component:()=>import('../components/customer/CustomerHistory.vue')
+        }
+       ]
+      }
 ]
 
 const router = new VueRouter({
